@@ -3,10 +3,13 @@ import Navbar from "@/components/Navbar";
 import { Toaster } from "@/components/ui/toaster";
 import "./globals.css";
 import { Suspense } from "react";
-import AnnouncementBar from "@/components/homepage/announcement-bar"
+import AnnouncementBar from "@/components/homepage/announcement-bar";
 import { Analytics } from "@vercel/analytics/react";
-import { ThemeProvider } from "@/components/homepage/theme-provider"
+import { ThemeProvider } from "@/components/homepage/theme-provider";
 import { validateConfig } from "@/lib/config";
+
+// 导入 Head 组件
+import Head from "next/head";
 
 // Validate configuration at app initialization
 validateConfig();
@@ -29,23 +32,9 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" suppressHydrationWarning>
-       <head>
-        {/* 添加 Google Analytics 代码 */}
-        <script async src="https://www.googletagmanager.com/gtag/js?id=G-LC40RWBC1Y"></script>
-        <script>
-          {`
-            window.dataLayer = window.dataLayer || [];
-            function gtag(){dataLayer.push(arguments);}
-            gtag('js', new Date());
-
-            gtag('config', 'G-LC40RWBC1Y');
-          `}
-        </script>
-      </head>
       <body className="min-h-screen flex flex-col bg-background">
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
           <AnnouncementBar />
-          {/* Remove the section wrapper as it's interfering with sticky positioning */}
           <Suspense
             fallback={
               <div className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
@@ -61,6 +50,19 @@ export default function RootLayout({
           <Footer />
           <Toaster />
           <Analytics />
+
+          {/* 使用 next/head 插入 Google Analytics 代码 */}
+          <Head>
+            <script async src="https://www.googletagmanager.com/gtag/js?id=G-LC40RWBC1Y"></script>
+            <script>
+              {`
+                window.dataLayer = window.dataLayer || [];
+                function gtag(){dataLayer.push(arguments);}
+                gtag('js', new Date());
+                gtag('config', 'G-LC40RWBC1Y');
+              `}
+            </script>
+          </Head>
         </ThemeProvider>
       </body>
     </html>
