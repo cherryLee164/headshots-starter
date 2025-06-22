@@ -1,5 +1,4 @@
 import "@/app/globals.css";
-
 import Footer from "@/components/Footer";
 import Navbar from "@/components/Navbar";
 import { Toaster } from "@/components/ui/toaster";
@@ -8,8 +7,6 @@ import { Analytics as VercelAnalytics } from "@vercel/analytics/react";
 import { ThemeProvider } from "@/components/homepage/theme-provider";
 import { validateConfig } from "@/lib/config";
 import { Suspense } from "react";
-
-// Next.js 的 Head 组件用于添加全局 <head> 内容
 import Head from "next/head";
 import Script from "next/script";
 
@@ -35,17 +32,17 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <Head>
-        {/* Google Analytics 脚本 */}
+        {/* 使用环境变量配置 Google Analytics */}
         <Script
           async
-          src="https://www.googletagmanager.com/gtag/js?id=G-LC40RWBC1Y"
+          src={`https://www.googletagmanager.com/gtag/js?id=${process.env.NEXT_PUBLIC_GA_ID}`}
         />
         <Script id="ga-script">
           {`
             window.dataLayer = window.dataLayer || [];
             function gtag(){dataLayer.push(arguments);}
             gtag('js', new Date());
-            gtag('config', 'G-LC40RWBC1Y');
+            gtag('config', '${process.env.NEXT_PUBLIC_GA_ID}');
           `}
         </Script>
       </Head>
