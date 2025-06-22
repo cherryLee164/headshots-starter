@@ -13,7 +13,7 @@ import { Suspense } from "react";
 import Head from "next/head";
 import Script from "next/script";
 
-// 初始化配置验证
+// 初始化配置验证 
 validateConfig();
 
 export const viewport = {
