@@ -1,21 +1,23 @@
+import "@/app/globals.css";
+
 import Footer from "@/components/Footer";
 import Navbar from "@/components/Navbar";
 import { Toaster } from "@/components/ui/toaster";
-import "./globals.css";
-import { Suspense } from "react";
 import AnnouncementBar from "@/components/homepage/announcement-bar";
-import { Analytics } from "@vercel/analytics/react";
+import { Analytics as VercelAnalytics } from "@vercel/analytics/react";
 import { ThemeProvider } from "@/components/homepage/theme-provider";
 import { validateConfig } from "@/lib/config";
+import { Suspense } from "react";
 
-// 导入 Head 组件
+// Next.js 的 Head 组件用于添加全局 <head> 内容
 import Head from "next/head";
+import Script from "next/script";
 
-// Validate configuration at app initialization
+// 初始化配置验证
 validateConfig();
 
 export const viewport = {
-  width: 'device-width',
+  width: "device-width",
   initialScale: 1,
   maximumScale: 1,
 };
@@ -32,6 +34,22 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" suppressHydrationWarning>
+      <Head>
+        {/* Google Analytics 脚本 */}
+        <Script
+          async
+          src="https://www.googletagmanager.com/gtag/js?id=G-LC40RWBC1Y"
+        />
+        <Script id="ga-script">
+          {`
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', 'G-LC40RWBC1Y');
+          `}
+        </Script>
+      </Head>
+
       <body className="min-h-screen flex flex-col bg-background">
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
           <AnnouncementBar />
@@ -44,25 +62,12 @@ export default function RootLayout({
           >
             <Navbar />
           </Suspense>
-          <main className="flex-1">
-            {children}
-          </main>
+
+          <main className="flex-1">{children}</main>
+
           <Footer />
           <Toaster />
-          <Analytics />
-
-          {/* 使用 next/head 插入 Google Analytics 代码 */}
-          <Head>
-            <script async src="https://www.googletagmanager.com/gtag/js?id=G-LC40RWBC1Y"></script>
-            <script>
-              {`
-                window.dataLayer = window.dataLayer || [];
-                function gtag(){dataLayer.push(arguments);}
-                gtag('js', new Date());
-                gtag('config', 'G-LC40RWBC1Y');
-              `}
-            </script>
-          </Head>
+          <VercelAnalytics />
         </ThemeProvider>
       </body>
     </html>
