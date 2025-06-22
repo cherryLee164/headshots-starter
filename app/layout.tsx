@@ -29,6 +29,19 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" suppressHydrationWarning>
+       <head>
+        {/* 添加 Google Analytics 代码 */}
+        <script async src="https://www.googletagmanager.com/gtag/js?id=G-LC40RWBC1Y"></script>
+        <script>
+          {`
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+
+            gtag('config', 'G-LC40RWBC1Y');
+          `}
+        </script>
+      </head>
       <body className="min-h-screen flex flex-col bg-background">
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
           <AnnouncementBar />
